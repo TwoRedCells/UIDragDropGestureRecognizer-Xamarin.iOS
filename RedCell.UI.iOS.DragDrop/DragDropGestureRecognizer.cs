@@ -18,6 +18,7 @@ namespace RedCell.UI.iOS
     /// <item><description>A timer starts. (Possible)</description></item>
     /// <item><description>The finger must stay at the same point until the timer elapses. (Possible)</description></item>
     /// <item><description>Once the timer elapses, the finger can move. (Changed)</description></item>
+    /// <item><description>When the finger is lefted, the gesture is complete. (Recognized)</description></item>
     /// </list>
     /// </remarks>
     public class DragDropGestureRecognizer : UIGestureRecognizer
@@ -47,6 +48,10 @@ namespace RedCell.UI.iOS
         /// Initializes a new instance of the <see cref="DragDropGestureRecognizer"/> class.
         /// </summary>
         /// <param name="action">The action.</param>
+        /// <remarks>
+        /// This method signature works like traditional iOS UIGestureRecognizers.
+        /// Using events instead is recommended.
+        /// </remarks>
         public DragDropGestureRecognizer(Action<DragDropGestureRecognizer> action)
         {
             _action = action;
@@ -114,15 +119,40 @@ namespace RedCell.UI.iOS
         public CGPoint DragAt { get; private set; }
 
         /// <summary>
+        /// Gets the point at which the view was when the gesture began.
+        /// </summary>
+        /// <value>The view was at.</value>
+        public CGPoint ViewWasAt { get; private set; }
+
+        /// <summary>
+        /// Gets the change in position since the gesture began.
+        /// </summary>
+        /// <value>The delta.</value>
+        public CGPoint Delta
+        {
+            get { return new CGPoint(DragAt.X - DownAt.X, DragAt.Y - DownAt.Y); }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether this <see cref="DragDropGestureRecognizer"/> is active.
         /// </summary>
         /// <value><c>true</c> if active; otherwise, <c>false</c>.</value>
         public bool Active { get { return DidDrag; } }
 
+        /// <summary>
+        /// The current state of this UIGestureRecognizer. Read-only.
+        /// </summary>
+        /// <value>To be added.</value>
+        /// <remarks>To be added.</remarks>
         public override UIGestureRecognizerState State
         {
             get { return base.State; }
-            set { base.State = value; }
+            set
+            {
+                base.State = value;
+                if(_action != null)
+                    _action(this);
+            }
         }
         #endregion
 
@@ -153,7 +183,8 @@ namespace RedCell.UI.iOS
                 Interval = HoldToBeginThresholdMilliseconds
             };
             _timer.Elapsed += TimerOnElapsed;
-            DownAt = LocationInView(View);
+            DownAt = GetTouchPoint();
+            ViewWasAt = View.Center;
             State = UIGestureRecognizerState.Possible;
             Debug.WriteLine("DragDropGesture #{0}: Begin at {1},{2}", ++_serial, DownAt.X, DownAt.Y);
         }
@@ -195,7 +226,7 @@ namespace RedCell.UI.iOS
             if (DidDrag)
             {
                 State = UIGestureRecognizerState.Recognized;
-                OnDropped(this, new DragDropEventArgs(State, DragAt));
+                OnDropped(this, new DragDropEventArgs(State, DragAt, Delta, ViewWasAt));
             }
             else
             {
@@ -237,7 +268,7 @@ namespace RedCell.UI.iOS
             // After long press:
             if (DidLongPress)
             {
-                var dragat = LocationInView(View);
+                var dragat = GetTouchPoint();
                 if (dragat == DragAt)
                     return; // Not noteworthy.
 
@@ -246,7 +277,7 @@ namespace RedCell.UI.iOS
                 {
                     Debug.WriteLine("DragDropGesture #{0}: Dragging at {1},{2}", _serial, DragAt.X, DragAt.Y);
                     DidDrag = true;
-                    OnDragging(this, new DragDropEventArgs(State, DragAt));
+                    OnDragging(this, new DragDropEventArgs(State, DragAt, Delta, ViewWasAt));
                     State = UIGestureRecognizerState.Changed;
                }
             }
@@ -254,7 +285,7 @@ namespace RedCell.UI.iOS
             // Before long press:
             else
             {
-                if (StayedPut(LocationInView(View), DownAt))
+                if (StayedPut(GetTouchPoint(), DownAt))
                     return;
 
                 if (_timer != null)
@@ -310,6 +341,15 @@ namespace RedCell.UI.iOS
             var dx = point1.X - point2.X;
             var dy = point1.Y - point2.Y;
             return (float)Math.Sqrt(dx * dx + dy * dy);
+        }
+
+        /// <summary>
+        /// Gets the touch point.
+        /// </summary>
+        /// <returns>CGPoint.</returns>
+        private CGPoint GetTouchPoint()
+        {
+            return LocationInView(View.Superview);
         }
         #endregion
     }

@@ -1,11 +1,17 @@
 ﻿using CoreGraphics;
-using Foundation;
 using UIKit;
 
 namespace RedCell.UI.iOS.DragDrop.Demo
 {
+    /// <summary>
+    /// Class RootViewController.
+    /// </summary>
     public class RootViewController : UIViewController
     {
+        /// <summary>
+        /// Called after the controller’s <see cref="P:UIKit.UIViewController.View" /> is loaded into memory.
+        /// </summary>
+        /// <remarks>This method is called after <c>this</c> <see cref="T:UIKit.UIViewController" />'s <see cref="P:UIKit.UIViewController.View" /> and its entire view hierarchy have been loaded into memory. This method is called whether the <see cref="T:UIKit.UIView" /> was loaded from a .xib file or programmatically.</remarks>
         public override void ViewDidLoad()
         {
             base.ViewDidLoad();
@@ -24,24 +30,37 @@ namespace RedCell.UI.iOS.DragDrop.Demo
                 Frame = new CGRect(100, 100, 100, 100),
                 BackgroundColor = UIColor.Red
             };
-            red.AddGestureRecognizer(new DragDropGestureRecognizer());
-            View.AddSubview(red);
-
-            var green = new UIView
+             var green = new UIView
             {
                 Frame = new CGRect(100, 250, 100, 100),
                 BackgroundColor = UIColor.Green
             };
-            green.AddGestureRecognizer(new DragDropGestureRecognizer());
-            View.AddSubview(green);
-
             var blue = new UIView
             {
                 Frame = new CGRect(100, 400, 100, 100),
                 BackgroundColor = UIColor.Blue
             };
-            blue.AddGestureRecognizer(new DragDropGestureRecognizer());
-            View.AddSubview(blue);
+            var boxes = new[] { red, green, blue };
+
+            // Add the gesture recognizer and and to view.
+            foreach (var box in boxes)
+            {
+                var dd = new DragDropGestureRecognizer();
+                dd.Dragging += OnDragging;
+                box.AddGestureRecognizer(dd);
+                View.AddSubview(box);
+            }
+        }
+
+        private void OnDragging(object sender, DragDropEventArgs e)
+        {
+            var dd = sender as DragDropGestureRecognizer;
+            var view = dd.View;
+
+            // Reposition box.
+            var x = e.ViewWasAt.X + e.Delta.X;
+            var y = e.ViewWasAt.Y + e.Delta.Y;
+            view.Center = new CGPoint(x, y);
         }
     }
 }

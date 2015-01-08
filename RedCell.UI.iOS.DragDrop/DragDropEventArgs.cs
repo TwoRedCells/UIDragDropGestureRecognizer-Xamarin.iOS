@@ -11,14 +11,18 @@ namespace RedCell.UI.iOS
     {
         #region Initialization
         /// <summary>
-        /// Initializes a new instance of the <see cref="DragDropEventArgs"/> class.
+        /// Initializes a new instance of the <see cref="DragDropEventArgs" /> class.
         /// </summary>
         /// <param name="state">The state.</param>
         /// <param name="point">The point.</param>
-        public DragDropEventArgs(UIGestureRecognizerState state, CGPoint point)
+        /// <param name="delta">The delta.</param>
+        /// <param name="viewWasAt">Where the view was at.</param>
+        public DragDropEventArgs(UIGestureRecognizerState state, CGPoint point, CGPoint delta, CGPoint viewWasAt)
         {
             State = state;
             Point = point;
+            Delta = delta;
+            ViewWasAt = viewWasAt;
         }
         #endregion
 
@@ -34,6 +38,18 @@ namespace RedCell.UI.iOS
         /// </summary>
         /// <value>The point.</value>
         public CGPoint Point { get; private set; }
+
+        /// <summary>
+        /// Gets the change in position since the gesture began.
+        /// </summary>
+        /// <value>The delta.</value>
+        public CGPoint Delta { get; private set; }
+
+        /// <summary>
+        /// Gets where the view was at.
+        /// </summary>
+        /// <value>Where the view was at.</value>
+        public CGPoint ViewWasAt { get; private set; }
         #endregion
     }
 }
