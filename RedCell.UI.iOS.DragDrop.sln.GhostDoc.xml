@@ -16,12 +16,12 @@
       <HtmlHelp>true</HtmlHelp>
       <MSHelpViewer>false</MSHelpViewer>
       <MSHelp2>false</MSHelp2>
-      <Website>false</Website>
+      <Website>true</Website>
     </HtmlFormats>
     <IncludeScopes>
       <Public>true</Public>
       <Internal>false</Internal>
-      <Protected>false</Protected>
+      <Protected>true</Protected>
       <Private>false</Private>
       <Inherited>true</Inherited>
       <InheritedFromReferences>true</InheritedFromReferences>
@@ -29,8 +29,8 @@
       <TagList />
     </IncludeScopes>
     <ResolveCrefLinks>true</ResolveCrefLinks>
-    <HeaderText />
-    <FooterText />
+    <HeaderText>DragDropGestureRecognizer</HeaderText>
+    <FooterText>Red Cell Innovation Inc.</FooterText>
     <SelectedProjects />
   </HelpConfiguration>
 </HelpConfigurations>
