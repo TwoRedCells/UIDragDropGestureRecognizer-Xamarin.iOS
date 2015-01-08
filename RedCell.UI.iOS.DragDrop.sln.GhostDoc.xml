@@ -9,14 +9,14 @@
   </SpellChecker>
 <HelpConfigurations selected="HelpFile">
   <HelpConfiguration name="HelpFile">
-    <OutputPath>.\Help</OutputPath>
+    <OutputPath>.\</OutputPath>
     <HelpFileName>RedCell.UI.iOS.DragDrop</HelpFileName>
     <ImageFolderPath />
     <HtmlFormats>
       <HtmlHelp>true</HtmlHelp>
       <MSHelpViewer>false</MSHelpViewer>
       <MSHelp2>false</MSHelp2>
-      <Website>true</Website>
+      <Website>false</Website>
     </HtmlFormats>
     <IncludeScopes>
       <Public>true</Public>
@@ -30,7 +30,7 @@
     </IncludeScopes>
     <ResolveCrefLinks>true</ResolveCrefLinks>
     <HeaderText>DragDropGestureRecognizer</HeaderText>
-    <FooterText>Red Cell Innovation Inc.</FooterText>
+    <FooterText>Copyright ©  2015 Red Cell Innovation Inc.</FooterText>
     <SelectedProjects />
   </HelpConfiguration>
 </HelpConfigurations>
