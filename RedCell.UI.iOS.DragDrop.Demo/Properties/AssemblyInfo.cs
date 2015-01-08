@@ -4,10 +4,10 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("RedCell.UI.iOS.DragDrop.Demo")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("DragDropGestureRecognizer Demo for Xamarin.iOS")]
+[assembly: AssemblyDescription("Demo app for RedCell.UI.iOS.DragDrop")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("Red Cell Innovaiton Inc.")]
 [assembly: AssemblyProduct("RedCell.UI.iOS.DragDrop.Demo")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]

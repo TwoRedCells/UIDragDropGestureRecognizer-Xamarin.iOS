@@ -24,14 +24,29 @@ namespace RedCell.UI.iOS
     public class DragDropGestureRecognizer : UIGestureRecognizer
     {
         #region Constants
+        /// <summary>
+        /// The default duration
+        /// </summary>
         public const int DefaultDuration = 500;
+
+        /// <summary>
+        /// The default movement threshold
+        /// </summary>
         public const double DefaultMovementThreshold = 10.0;
         #endregion
 
         #region Fields
+        /// <summary>
+        /// The time to hold-to-drag in milliseconds before qualifying.
+        /// </summary>
         public static int HoldToBeginThresholdMilliseconds = DefaultDuration;
+
+        /// <summary>
+        /// The movement threshold.
+        /// </summary>
         public static double MovementThreshold = DefaultMovementThreshold;
-        private Action<DragDropGestureRecognizer> _action;
+
+        private readonly Action<DragDropGestureRecognizer> _action;
         private Timer _timer;
         private static int _serial = 0;
         #endregion

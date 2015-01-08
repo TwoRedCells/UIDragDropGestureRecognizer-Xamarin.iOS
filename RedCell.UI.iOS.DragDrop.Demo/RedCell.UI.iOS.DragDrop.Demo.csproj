@@ -64,6 +64,8 @@
     <CodesignProvision />
     <CodesignResourceRules />
     <CodesignExtraArgs />
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\iPhone\Debug\RedCellUIiOSDragDropDemo.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|iPhone' ">
     <DebugType>none</DebugType>
