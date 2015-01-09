@@ -18,7 +18,7 @@ How to Use
 To add a `DragDropGestureRecognizer` to your app, simple add these files to your project:
 * `DragDropGestureRecognizer.cs`
 * `DragDropEventArgs.cs`
-* Add a preprocessor definition to the project's build settings or #define in code:
+* Add a preprocessor definition to the project's build settings or `#define` in code:
 	* XAMARIN_CLASSIC_API
 	* XAMARIN_UNIFIED_API
 
