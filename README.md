@@ -19,8 +19,9 @@ To add a `DragDropGestureRecognizer` to your app, simple add these files to your
 * `DragDropGestureRecognizer.cs`
 * `DragDropEventArgs.cs`
 * Add a preprocessor definition to the project's build settings or `#define` in code:
-	* XAMARIN_CLASSIC_API
-	* XAMARIN_UNIFIED_API
+	* `XAMARIN_CLASSIC_API`
+	* `XAMARIN_UNIFIED_API`
+* (optional) For verbose debugging define `DRAGDROP_VERBOSE_DEBUGGING`.
 
 Alternatively, you can:
 * Add the `RedCell.UI.iOS.DragDrop` project to your solution; or

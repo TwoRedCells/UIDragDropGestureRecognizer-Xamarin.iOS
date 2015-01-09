@@ -82,6 +82,21 @@ namespace RedCell.UI.iOS
         #endregion
 
         #region Events
+        /// <summary>
+        /// Occurs when the view has been held.
+        /// </summary>
+        public event EventHandler<DragDropEventArgs> Held;
+
+        /// <summary>
+        /// Handles the <see cref="E:Held" /> event.
+        /// </summary>
+        /// <param name="sender">The sender.</param>
+        /// <param name="e">The <see cref="DragDropEventArgs"/> instance containing the event data.</param>
+        protected void OnHeld(object sender, DragDropEventArgs e)
+        {
+            if (Held != null)
+                Held(sender, e);
+        }
 
         /// <summary>
         /// Occurs when dragging.
@@ -177,6 +192,13 @@ namespace RedCell.UI.iOS
                     _action(this);
             }
         }
+
+        public override bool CanBePreventedByGestureRecognizer(UIGestureRecognizer preventingGestureRecognizer)
+        {
+           bool value = base.CanBePreventedByGestureRecognizer(preventingGestureRecognizer);
+            return false;
+        }
+
         #endregion
 
         #region Methods
@@ -209,7 +231,9 @@ namespace RedCell.UI.iOS
             DownAt = GetTouchPoint();
             ViewWasAt = View.Center;
             State = UIGestureRecognizerState.Possible;
+#if DRAGDROP_VERBOSE_DEBUGGING
             Debug.WriteLine("DragDropGesture #{0}: Begin at {1},{2}", ++_serial, DownAt.X, DownAt.Y);
+#endif
         }
 
         /// <summary>
@@ -227,8 +251,11 @@ namespace RedCell.UI.iOS
                 _timer.Stop();
                 _timer.Dispose();
                 _timer = null;
+#if DRAGDROP_VERBOSE_DEBUGGING
                 Debug.WriteLine("DragDropGesture #{0}: Held", _serial);
+#endif
                 State = UIGestureRecognizerState.Changed;
+                OnHeld(this, new DragDropEventArgs(State, DragAt, Delta, ViewWasAt));
             }
         }
 
@@ -255,7 +282,9 @@ namespace RedCell.UI.iOS
             {
                 State = UIGestureRecognizerState.Failed;
             }
+#if DRAGDROP_VERBOSE_DEBUGGING
             Debug.WriteLine("DragDropGesture #{0}: {1}", _serial, State);
+#endif
         }
 
         /// <summary>
@@ -273,7 +302,9 @@ namespace RedCell.UI.iOS
 
             _timer = null;
             State = UIGestureRecognizerState.Failed;
+#if DRAGDROP_VERBOSE_DEBUGGING
             Debug.WriteLine("DragDropGesture #{0}: Cancelled", _serial);
+#endif
         }
 
         /// <summary>
@@ -298,7 +329,9 @@ namespace RedCell.UI.iOS
                 DragAt = dragat;
                 if (!StayedPut(DownAt, DragAt))
                 {
-                    Debug.WriteLine("DragDropGesture #{0}: Dragging at {1},{2}", _serial, DragAt.X, DragAt.Y);
+#if DRAGDROP_VERBOSE_DEBUGGING
+                   Debug.WriteLine("DragDropGesture #{0}: Dragging at {1},{2}", _serial, DragAt.X, DragAt.Y);
+#endif
                     DidDrag = true;
                     OnDragging(this, new DragDropEventArgs(State, DragAt, Delta, ViewWasAt));
                     State = UIGestureRecognizerState.Changed;
@@ -315,7 +348,9 @@ namespace RedCell.UI.iOS
                     _timer.Dispose();
                 _timer = null;
                 State = UIGestureRecognizerState.Failed;
+#if DRAGDROP_VERBOSE_DEBUGGING
                 Debug.WriteLine("DragDropGesture #{0}: Moved prematurely", _serial);
+#endif
             }
         }
 
@@ -329,8 +364,8 @@ namespace RedCell.UI.iOS
 
             if (_timer != null)
             {
-                _timer.Dispose();
                 _timer.Stop();
+                _timer.Dispose();
             }
             _timer = null;
 
@@ -339,7 +374,9 @@ namespace RedCell.UI.iOS
             DragAt = CGPoint.Empty;
             DidLongPress = false;
             DidDrag = false;
+#if DRAGDROP_VERBOSE_DEBUGGING
             Debug.WriteLine("DragDropGesture #{0}: Reset", _serial);
+#endif
         }
 
         /// <summary>
