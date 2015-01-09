@@ -1,9 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Timers;
+#if XAMARIN_CLASSIC_API
+using System.Drawing;
+using CGPoint = System.Drawing.PointF;
+using MonoTouch.Foundation;
+using MonoTouch.UIKit;
+#endif
+#if XAMARIN_UNIFIED_API
 using CoreGraphics;
 using Foundation;
 using UIKit;
+#endif
 
 namespace RedCell.UI.iOS
 {
