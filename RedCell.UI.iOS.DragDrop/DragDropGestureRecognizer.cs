@@ -56,8 +56,10 @@ namespace RedCell.UI.iOS
 
         private readonly Action<DragDropGestureRecognizer> _action;
         private Timer _timer;
+#if DRAGDROP_VERBOSE_DEBUGGING
         private static int _serial = 0;
-        #endregion
+#endif
+       #endregion
 
         #region Initialization
         /// <summary>
@@ -193,12 +195,16 @@ namespace RedCell.UI.iOS
             }
         }
 
+        /// <summary>
+        /// Informs the called if this gesture recognizer can be prevented by the specified gesture recognizer.
+        /// </summary>
+        /// <param name="preventingGestureRecognizer">The query.</param>
+        /// <returns>True if it can be prevented; otherwise false.</returns>
         public override bool CanBePreventedByGestureRecognizer(UIGestureRecognizer preventingGestureRecognizer)
         {
-           bool value = base.CanBePreventedByGestureRecognizer(preventingGestureRecognizer);
+            //bool value = base.CanBePreventedByGestureRecognizer(preventingGestureRecognizer);
             return false;
         }
-
         #endregion
 
         #region Methods
@@ -254,8 +260,8 @@ namespace RedCell.UI.iOS
 #if DRAGDROP_VERBOSE_DEBUGGING
                 Debug.WriteLine("DragDropGesture #{0}: Held", _serial);
 #endif
+                OnHeld(this, new DragDropEventArgs(default(UIGestureRecognizerState), DragAt, Delta, ViewWasAt));
                 State = UIGestureRecognizerState.Changed;
-                OnHeld(this, new DragDropEventArgs(State, DragAt, Delta, ViewWasAt));
             }
         }
 
